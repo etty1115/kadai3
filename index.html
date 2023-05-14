@@ -1,44 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <title>書籍検索</title>
+  <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    <header>
-        <h1>おすすめ課題図書選定</h1>
-    </header>
+  <header class="header">
+    <div class="container">
+      <h1 class="logo">書籍検索サービス</h1>
+    </div>
+  </header>
 
-    <main>
-        <div class="form">
-            <h1>あなたの経歴を教えてください</h1>
-            <input type="checkbox" name="example" value="サンプル">営業経験
-            <input type="checkbox" name="example" value="サンプル">プロジェクトマネジメント経験
-            <input type="checkbox" name="example" value="サンプル">人事労務経験
-            <input type="checkbox" name="example" value="サンプル">SaaS企業就業経験
-            <input type="checkbox" name="example" value="サンプル">freee人事労務利用経験
+  <main class="main">
+    <div class="container">
+      <form id="search-form">
+        <div class="search-options">
+          <label>
+            <input type="checkbox" name="experience" value="営業経験なし">営業経験なし
+          </label>
+          <label>
+            <input type="checkbox" name="experience" value="人事労務経験なし">人事労務経験なし
+          </label>
+          <label>
+            <input type="checkbox" name="experience" value="カスタマーサクセスなし">カスタマーサクセスなし
+          </label>
+          <label>
+            <input type="checkbox" name="experience" value="saas経験なし">SaaS経験なし
+          </label>
         </div>
+        <button class="search-button" type="submit">検索</button>
+      </form>
 
+      <div id="search-results" class="search-results"></div>
+    </div>
+  </main>
 
-        <h1>あなたの読んだ方が良い本はこちらです！</h1>
-        <img src="" alt="">
-        <h1>課題図書一覧</h1>
-        <a href="https://amzn.asia/d/dFtydVZ" target="_blank"><img src="/img/CS1.jpeg" alt="カスタマーサクセス――サブスクリプション時代に求められる「顧客の成功」10の原則"></a>
-        <a href="https://amzn.asia/d/e1Y5QoN" target="_blank"><img src="/img/CS2.jpeg" alt="カスタマーサクセス・プロフェッショナル――顧客の成功を支え、持続的な利益成長をもたらす仕事のすべて"></a>
-        <a href="https://amzn.asia/d/hVRk1HH" target="_blank"><img src="/img/saas1.jpg" alt="THE MODEL(MarkeZine BOOKS) マーケティング・インサイドセールス・営業・カスタマーサクセスの共業プロセス"></a>
-        <a href="https://amzn.asia/d/aipWmxQ" target="_blank"><img src="/img/CS3.jpg" alt="カスタマーサクセスとは何か――日本企業にこそ必要な「これからの顧客との付き合い方」"></a>
-        <a href="https://amzn.asia/d/1s6tYt2CS4" target="_blank"><img src="/img/CS4.jpeg" alt="カスタマーサクセス経営: 顧客に成功と優れた体験（CX）を届けるプロダクト主導型成長（PLG）戦略"></a>
-        <a href="https://amzn.asia/d/5fxGW1A" target="_blank"><img src="/img/HR1.jpeg" alt="2023年度版 給与計算実務能力検定®２級公式テキスト"></a>
-        <a href="" target="_blank"><img src="" alt=""></a>
-        <a href="" target="_blank"><img src="" alt=""></a>
-        <a href="" target="_blank"><img src="" alt=""></a>
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2023 書籍検索サービス. All rights reserved.</p>
+    </div>
+  </footer>
 
-    </main>
-
-    <footer>
-
-    </footer>
+  <script src="/js/script.js"></script>
 </body>
 </html>
