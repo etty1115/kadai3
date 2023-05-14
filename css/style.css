@@ -2,60 +2,59 @@
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
-  }
-  
-  body {
+}
+
+body {
 	font-family: Arial, sans-serif;
 	font-size: 16px;
 	line-height: 1.5;
-  }
-  
-  .container {
+}
+
+.container {
 	max-width: 960px;
 	margin: 0 auto;
 	padding: 0 20px;
-  }
-  
-  .header {
-	background-color: #333;
+}
+
+.header {
+	background-color: #2c3e50;
 	color: #fff;
 	padding: 20px 0;
-  }
-  
-  .header .logo {
+}
+
+.header .logo {
 	font-size: 24px;
-  }
-  
-  .main {
+}
+
+.main {
 	padding: 40px 0;
-  }
-  
-  .search-options {
+}
+
+.search-options {
 	margin-bottom: 20px;
-  }
-  
-  .search-options label {
+}
+
+.search-options label {
 	display: block;
 	margin-bottom: 10px;
-  }
-  
-  .search-button {
-	background-color: #333;
+}
+
+.search-button {
+	background-color: #2c3e50;
 	color: #fff;
 	border: none;
 	padding: 10px 20px;
 	font-size: 18px;
 	cursor: pointer;
-  }
-  
-  .search-results {
+}
+
+.search-results {
 	margin-top: 40px;
-  }
-  
-  .footer {
-	background-color: #333;
+}
+
+.footer {
+	background-color: #2c3e50;
 	color: #fff;
 	padding: 20px 0;
 	text-align: center;
-  }
-  
+}

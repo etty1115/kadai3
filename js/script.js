@@ -1,77 +1,113 @@
 const form = document.getElementById('search-form');
-const resultsDiv = document.getElementById('search-results');
+const previousResults = [];
 
 form.addEventListener('submit', e => {
   e.preventDefault();
-  resultsDiv.innerHTML = '<p>検索中...</p>';
 
   const experienceOptions = document.querySelectorAll('input[name="experience"]:checked');
   const selectedExperiences = Array.from(experienceOptions).map(option => option.value);
 
-  let keyword = '';
-  let category = '';
-
-  if (selectedExperiences.includes('営業経験なし')) {
-    category = '営業';
-  } else if (selectedExperiences.includes('人事労務経験なし')) {
-    category = '人事労務関連';
-  } else if (selectedExperiences.includes('カスタマーサクセスなし')) {
-    category = 'カスタマーサクセス';
-  } else if (selectedExperiences.includes('saas経験なし')) {
-    category = 'SaaS';
-  }
-
-  if (category !== '') {
-    keyword = `おすすめ ${category} 書籍`;
-  }
-
-  const url = `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(keyword)}&maxResults=10`;
-
-  fetch(url)
-    .then(response => response.json())
-    .then(data => {
-      const items = data.items;
-      resultsDiv.innerHTML = '';
-
-      if (items) {
-        items.forEach(item => {
-          const volumeInfo = item.volumeInfo;
-          const title = volumeInfo.title;
-          const authors = volumeInfo.authors;
-          const description = volumeInfo.description;
-          const imageLinks = volumeInfo.imageLinks;
-          const thumbnail = imageLinks ? imageLinks.thumbnail : 'noimage.png';
-
-          const bookDiv = document.createElement('div');
-          bookDiv.classList.add('book');
-
-          const image = document.createElement('img');
-          image.src = thumbnail;
-          bookDiv.appendChild(image);
-
-          const infoDiv = document.createElement('div');
-          infoDiv.classList.add('info');
-
-          const titleElement = document.createElement('h2');
-          titleElement.textContent = title;
-          infoDiv.appendChild(titleElement);
-
-          const authorsElement = document.createElement('p');
-          authorsElement.textContent = '著者: ' + authors.join(', ');
-          infoDiv.appendChild(authorsElement);
-
-          const descriptionElement = document.createElement('p');
-          descriptionElement.textContent = description;
-          infoDiv.appendChild(descriptionElement);
-
-          bookDiv.appendChild(infoDiv);
-          resultsDiv.appendChild(bookDiv);
-        });
-      } else {
-        resultsDiv.innerHTML = '<p>検索結果が見つかりませんでした。</p>';
-      }
-    })
-    .catch(() => {
-      resultsDiv.innerHTML = '<p>エラーが発生しました。もう一度お試しください。</p>';
-    });
+  selectedExperiences.forEach(experience => {
+    const keyword = getKeywordByExperience(experience);
+    searchBooks(keyword, experience);
+  });
 });
+
+function getKeywordByExperience(experience) {
+  let keyword = '';
+
+  switch (experience) {
+    case '営業経験なし':
+      keyword = '営業向け書籍';
+      break;
+    case '人事労務経験なし':
+      keyword = '初心者向けの人事労務関連図書';
+      break;
+    case 'カスタマーサクセスなし':
+      keyword = 'カスタマーサクセス関連書籍';
+      break;
+    case 'saas経験なし':
+      keyword = 'SaaSのビジネスモデルが理解できる書籍';
+      break;
+    default:
+      break;
+  }
+
+  return keyword;
+}
+
+async function searchBooks(keyword, experience) {
+  const resultsDiv = document.createElement('div');
+  resultsDiv.classList.add('search-results');
+
+  const heading = document.createElement('h2');
+  heading.textContent = `${experience} のおすすめ書籍`;
+  resultsDiv.appendChild(heading);
+
+  const paragraph = document.createElement('p');
+  paragraph.textContent = `検索結果が表示される部分です。${experience} に関連する ${keyword} が表示されます。`;
+  resultsDiv.appendChild(paragraph);
+
+  try {
+    const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(keyword)}&maxResults=5`);
+    const data = await response.json();
+
+    const bookList = document.createElement('ul');
+
+    if (data && data.items) {
+      data.items.forEach(item => {
+        const volumeInfo = item.volumeInfo;
+        const title = volumeInfo.title;
+        const authors = volumeInfo.authors;
+        const imageLinks = volumeInfo.imageLinks;
+        const thumbnail = imageLinks ? imageLinks.thumbnail : 'noimage.png';
+
+        const bookItem = createBookItem(title, authors, thumbnail);
+        bookList.appendChild(bookItem);
+      });
+    }
+
+    resultsDiv.appendChild(bookList);
+
+    // 直前の検索結果を非表示にする
+    const previousResult = previousResults.find(result => result.experience === experience);
+    if (previousResult) {
+      previousResult.element.style.display = 'none';
+    }
+
+    // 現在の検索結果を保存
+    previousResults.push({ experience, element: resultsDiv });
+  } catch (error) {
+    console.error(error);
+    resultsDiv.innerHTML = '<p>検索結果を取得できませんでした。</p>';
+  }
+
+  document.body.appendChild(resultsDiv);
+}
+
+
+  function createBookItem(title, authors, thumbnail, amazonLink) {
+    const bookItem = document.createElement('li');
+  
+    const imageElement = document.createElement('img');
+    imageElement.src = thumbnail;
+    imageElement.alt = title;
+    bookItem.appendChild(imageElement);
+  
+    const titleElement = document.createElement('h3');
+    titleElement.textContent = title;
+    bookItem.appendChild(titleElement);
+  
+    const authorElement = document.createElement('p');
+    authorElement.textContent = `著者: ${authors.join(', ')}`;
+    bookItem.appendChild(authorElement);
+  
+    const amazonButton = document.createElement('a');
+    amazonButton.href = amazonLink;
+    amazonButton.textContent = 'Amazonで購入';
+    amazonButton.classList.add('amazon-button');
+    bookItem.appendChild(amazonButton);
+  
+    return bookItem;
+  }
+  
