@@ -77,37 +77,40 @@ async function searchBooks(keyword, experience) {
 
     // 現在の検索結果を保存
     previousResults.push({ experience, element: resultsDiv });
+
+    // 新しいウェブサイトタブで検索結果を表示
+    const newWindow = window.open('', '_blank');
+    newWindow.document.write(resultsDiv.outerHTML);
+    newWindow.document.close();
   } catch (error) {
     console.error(error);
     resultsDiv.innerHTML = '<p>検索結果を取得できませんでした。</p>';
   }
-
-  document.body.appendChild(resultsDiv);
 }
 
+function createBookItem(title, authors, thumbnail, amazonLink) {
+  const bookItem = document.createElement('li');
 
-  function createBookItem(title, authors, thumbnail, amazonLink) {
-    const bookItem = document.createElement('li');
-  
-    const imageElement = document.createElement('img');
-    imageElement.src = thumbnail;
-    imageElement.alt = title;
-    bookItem.appendChild(imageElement);
-  
-    const titleElement = document.createElement('h3');
-    titleElement.textContent = title;
-    bookItem.appendChild(titleElement);
-  
-    const authorElement = document.createElement('p');
-    authorElement.textContent = `著者: ${authors.join(', ')}`;
-    bookItem.appendChild(authorElement);
-  
+  const imageElement = document.createElement('img');
+  imageElement.src = thumbnail;
+  imageElement.alt = title;
+  bookItem.appendChild(imageElement);
+
+  const titleElement = document.createElement('h3');
+  titleElement.textContent = title;
+  bookItem.appendChild(titleElement);
+
+  const authorElement = document.createElement('p');
+  authorElement.textContent = `著者: ${authors.join(', ')}`;
+  bookItem.appendChild(authorElement);
+
+  if (amazonLink) {
     const amazonButton = document.createElement('a');
     amazonButton.href = amazonLink;
     amazonButton.textContent = 'Amazonで購入';
     amazonButton.classList.add('amazon-button');
     bookItem.appendChild(amazonButton);
-  
-    return bookItem;
   }
-  
+
+  return bookItem;
+}
